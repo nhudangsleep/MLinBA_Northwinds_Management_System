@@ -1,2 +1,3 @@
 # MliBA_FinalProject
-This is ML in BA Final Project
+
+A Machine Learning in Business Analytics project
