@@ -1,0 +1,16 @@
+{
+    "northwind": {
+        "account": [
+            {"column_name": "username", "data_type": "varchar", "is_nullable": "NO", "character_maximum_length": 255, "pk_name": "PRIMARY", "is_auto_increment": "NO"},
+            {"column_name": "password", "data_type": "varchar", "is_nullable": "NO", "character_maximum_length": 255, "pk_name": "", "is_auto_increment": "NO"},
+            {"column_name": "employeeId", "data_type": "int", "is_nullable": "NO", "character_maximum_length": None, "pk_name": "", "is_auto_increment": "NO"}
+        ],
+        "category": [
+            {"column_name": "categoryId", "data_type": "int", "is_nullable": "NO", "character_maximum_length": None, "pk_name": "PRIMARY", "is_auto_increment": "YES"},
+            {"column_name": "categoryName", "data_type": "varchar", "is_nullable": "NO", "character_maximum_length": 15, "pk_name": "", "is_auto_increment": "NO"},
+            {"column_name": "description", "data_type": "text", "is_nullable": "YES", "character_maximum_length": 65535, "pk_name": "", "is_auto_increment": "NO"},
+            {"column_name": "picture", "data_type": "blob", "is_nullable": "YES", "character_maximum_length": 65535, "pk_name": "", "is_auto_increment": "NO"}
+        ],
+        # Add other tables similarly
+    }
+}
