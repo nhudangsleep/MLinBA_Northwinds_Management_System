@@ -28,12 +28,13 @@ class MainWindowEx(Ui_MainWindow, BaseTableViewEx):
 
     def init_connection(self):
         self.connector = Connector()
-        self.connector.server = "localhost"
+        self.connector.server = "127.0.0.1"
         self.connector.port = 3306
         self.connector.username = "root"
         self.connector.database = "northwind"
-        self.connector.password = "hoanganh123"
+        self.connector.password = "Nhudangstudy123."
         self.connector.connect()
+
     def process_customer(self):
         try:
             self.model = BaseModel(table_name="customer", connector=self.connector)

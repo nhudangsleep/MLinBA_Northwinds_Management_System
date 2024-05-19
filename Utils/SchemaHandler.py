@@ -68,9 +68,14 @@ class SchemaHandler:
             if table_name not in prettified_schema[schema_name]:
                 prettified_schema[schema_name][table_name] = []
 
+            try:
+                data_type = data_type.decode('utf-8')
+            except:
+                pass
+
             column_info = {
                 "column_name": column_name,
-                "data_type": data_type.decode('utf-8'),
+                "data_type": data_type,
                 "is_nullable": is_nullable,
                 "character_maximum_length": character_maximum_length,
                 "pk_name": pk_name,
