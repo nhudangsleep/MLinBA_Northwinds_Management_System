@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QIntValidator, QDoubleValidator
 from Service.Base.HoverComboBox import HoverComboBox
-from PyQt6.QtCore import QDateTime
+from PyQt6.QtCore import QDateTime, QDate
 from datetime import datetime
 
 
@@ -62,8 +62,8 @@ class EditDialog(QDialog):
                     field = QDateEdit()
                     field.setDisplayFormat("d-MMM-yyyy")
                     field.setCalendarPopup(True)
-                    print(col_value)
-                    field.setDateTime(col_value)
+                    col_value = QDate(col_value.year, col_value.month, col_value.day)
+                    field.setDate(col_value)
                 else:  # For strings and other types
                     field = QLineEdit(self)
                     field.setText(str(col_value))
