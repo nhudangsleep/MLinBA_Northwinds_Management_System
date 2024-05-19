@@ -1,7 +1,7 @@
 import mysql.connector
 import traceback
 import pandas as pd
-from Utils.schemas_prettier import schemas_prettier
+from Utils.SchemaHandler import SchemaHandler
 import sqlalchemy
 
 
@@ -40,7 +40,6 @@ class Connector:
     def get_all_schemas(self):
         try:
             sql = f"""SELECT 
-                            c.TABLE_SCHEMA AS schema_name,
                             c.TABLE_NAME AS table_name,
                             c.COLUMN_NAME AS column_name,
                             c.DATA_TYPE AS data_type,
@@ -67,11 +66,11 @@ class Connector:
             cursor = self.conn.cursor()
             cursor.execute(sql)
             lst = cursor.fetchall()
-            lst_schemas = schemas_prettier(lst)
+            lst_schemas = SchemaHandler.schemas_prettier(lst)
             self.schema_dictionary = lst_schemas
             self.table_names = list(lst_schemas[self.database].keys())
             return self.schema_dictionary
-        
+
         except Exception as e:
             traceback.print_exc()
 

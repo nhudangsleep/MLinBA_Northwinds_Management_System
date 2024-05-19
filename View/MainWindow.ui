@@ -6,74 +6,138 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>804</width>
-    <height>356</height>
+    <width>610</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableView" name="tableView">
+   <widget class="QFrame" name="frame_app_name">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>601</width>
-      <height>211</height>
+      <x>10</x>
+      <y>10</y>
+      <width>591</width>
+      <height>51</height>
      </rect>
     </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>-1</x>
+       <y>0</y>
+       <width>591</width>
+       <height>43</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="frame_app_name_layout">
+      <item>
+       <widget class="QLabel" name="label_app_name">
+        <property name="font">
+         <font>
+          <family>Sylfaen</family>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(64, 102, 219);
+color : rgb(255, 255, 255)
+</string>
+        </property>
+        <property name="text">
+         <string>Northwind Management System</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
-   <widget class="QPushButton" name="pushButtonCustomer">
+   <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>240</y>
-      <width>81</width>
+      <x>10</x>
+      <y>60</y>
+      <width>591</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton_dashboard">
+       <property name="text">
+        <string>Dashboard</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_sales">
+       <property name="text">
+        <string>Sales</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_operation">
+       <property name="text">
+        <string>Operation</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_catalog">
+       <property name="text">
+        <string>Catalog</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_predictive_model">
+       <property name="text">
+        <string>Predictive Models</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>100</y>
+      <width>591</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>3</number>
+    </property>
+    <widget class="QWidget" name="page_dashboard"/>
+    <widget class="QWidget" name="page_management"/>
+    <widget class="QWidget" name="page_predictive_model"/>
+    <widget class="QWidget" name="page_sales"/>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>591</width>
       <height>16</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Load Customer</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButtonEmployee">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>240</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load Employee</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButtonProduct">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>240</y>
-      <width>56</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load Product</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButtonSales">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>240</y>
-      <width>56</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load sales</string>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
     </property>
    </widget>
   </widget>
@@ -82,8 +146,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>804</width>
-     <height>18</height>
+     <width>610</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>

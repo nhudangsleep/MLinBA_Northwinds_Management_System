@@ -1,9 +1,9 @@
+from Controller.MainWindowController import MainWindowController
 from PyQt6.QtWidgets import QApplication, QMainWindow
 
-from View.MainWindowEx import MainWindowEx
 
-app=QApplication([])
-myWindow=MainWindowEx()
+app = QApplication([])
+myWindow = MainWindowController()
 myWindow.setupUi(QMainWindow())
 myWindow.show()
 app.exec()
