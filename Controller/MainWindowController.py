@@ -1,3 +1,5 @@
+import traceback
+
 from Controller.Base.BaseController import BaseController
 from View.MainWindow import Ui_MainWindow
 
@@ -12,6 +14,7 @@ class MainWindowController(Ui_MainWindow, BaseController):
         self.MainWindow = MainWindow
         self.stackedWidget.setCurrentIndex(1)
         self.setup_navigation_bar()
+        self.process_orders()
 
     def setup_navigation_bar(self):
         self.sales_dropdown_buttons = {
@@ -34,8 +37,8 @@ class MainWindowController(Ui_MainWindow, BaseController):
         self.pushButton_catalog.setup_actions(self.catalog_dropdown_buttons)
 
     def process_customers(self):
-        self.stackedWidget.setCurrentIndex(1)
-        self.management_page_controller.connect_table("Customer")
+        self.stackedWidget.setCurrentIndex(2)
+        self.sales_page_controller.connect_table("Customer")
 
     def process_orders(self):
         self.stackedWidget.setCurrentIndex(2)
@@ -48,7 +51,6 @@ class MainWindowController(Ui_MainWindow, BaseController):
     def process_suppliers(self):
         self.stackedWidget.setCurrentIndex(1)
         self.management_page_controller.connect_table("Supplier")
-
 
     def process_shippers(self):
         self.stackedWidget.setCurrentIndex(1)

@@ -2,11 +2,13 @@ import importlib
 import traceback
 from copy import deepcopy
 import pandas as pd
+from pandas.api.types import is_datetime64_any_dtype as is_datetime
 from Connector.Bridge import DataBridge
 from datetime import datetime
-from PyQt6 import QtGui
-from PyQt6.QtCore import Qt, QAbstractTableModel
+from PyQt6 import QtGui, QtCore
+from PyQt6.QtCore import Qt, QAbstractTableModel, QModelIndex, QVariant
 from Model.Base.BaseException import InvalidTableNameError
+from Model.Base.CRUDAPI import CRUDAPI
 from Utils.DataframeUtils import compare_dataframes
 
 
@@ -16,6 +18,7 @@ class BaseModel(QAbstractTableModel):
             self.table_name = table_name
             self.connector = connector
             self.dataframe = None
+            self.pk_column = self.find_pk_of_table(self.table_name, self.connector)
             self.init_bridge()
             super().__init__()
         else:
@@ -66,6 +69,12 @@ class BaseModel(QAbstractTableModel):
                 'model': model_class(self.connector)
             }
 
+    def filter_collection_data(self, additional_data):
+        try:
+            self.dataframe = self.dataframe[self.dataframe["orderId"] == additional_data['orderId']]
+        except:
+            pass
+
     def data(self, index, role):
         try:
             if not index.isValid():
@@ -89,18 +98,19 @@ class BaseModel(QAbstractTableModel):
         except:
             traceback.print_exc()
 
-    def rowCount(self, index):
+    def rowCount(self, index=None):
         return self.dataframe.shape[0]
 
-    def columnCount(self, index):
+    def columnCount(self, index=None):
         return self.dataframe.shape[1]
 
-    def headerData(self, section, orientation, role):
+    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
         if role == Qt.ItemDataRole.DisplayRole:
             if orientation == Qt.Orientation.Horizontal:
-                return str(self.dataframe.columns[section])
-            if orientation == Qt.Orientation.Vertical:
+                return self.dataframe.columns[section]  # Show column names
+            elif orientation == Qt.Orientation.Vertical:
                 return str(section + 1)
+        return QVariant()
 
     def flags(self, index):
         default_flags = super().flags(index)
@@ -137,7 +147,8 @@ class BaseModel(QAbstractTableModel):
                                 return True
                             elif data_type == "datetime":
                                 try:
-                                    value = datetime.strptime(value, "%Y-%m-%d")
+                                    value = datetime.strptime(value, "d-MMM-yyyy")
+                                    print(value)
                                 except ValueError:
                                     print("Invalid value for datetime column {}.".format(column_name))
                                     return False
@@ -166,37 +177,55 @@ class BaseModel(QAbstractTableModel):
                     return True
 
                 else:
-                    print("Column information not found for column {}".format(column_name))
                     return False
             return False
         except:
             traceback.print_exc()
 
-    def update(self):
+    def commit(self):
         try:
-            # compare self.parent_data and self.dataframe
-            # find all mismatching records
-            # if self.dataframe is missing some record in self.parent_data -> means that we need to archive these records
-            # if same pk but different value -> means that  we need to update these records
-            # if self.dataframe have new records (new_pk)
-            archive_data = []
-            update_data = []
-            new_data = []
-            pk_column = BaseModel.find_pk_of_table(table_name=self.table_name, connector=self.connector)
-            a = compare_dataframes(self.dataframe, self.parent_data, pk_column)
-            print(len(a['matching_rows']))
-            print(len(a['mismatching_rows']))
-            print(len(a['new_rows']))
-            print(len(a['removed_rows']))
+            CRUD_service = CRUDAPI(connector=self.connector, table_name=self.table_name, pk_column = self.pk_column, dataframe= self.dataframe, parent_data=self.parent_data)
+            self.dataframe = CRUD_service.commit_changes()
+            self.parent_data = deepcopy(self.dataframe)
         except:
             traceback.print_exc()
 
-    def create_new_record(self, **data):
-        pass
 
-    def update_record(self, pk):
-        pass
+    def remove_row(self, row, rows=1, index=QModelIndex()):
+        self.beginRemoveRows(index, row, row + rows - 1)
+        self.dataframe.drop(self.dataframe.index[row:row + rows], inplace=True)
+        self.endRemoveRows()
+        return True
 
-    def remove_record(self, pk):
-        pass
+    def insert_row(self, row, rows=1, index=QModelIndex()):
+        self.beginInsertRows(QModelIndex(), row, row + rows - 1)
+        try:
+            pk_column = self.find_pk_of_table(self.table_name, self.connector)
+            new_record_pk_value = self.dataframe[pk_column].max() + 1
+            new_row = {col: None for col in self.dataframe.columns}
+            new_row[pk_column] = new_record_pk_value
+
+            new_row_df = pd.DataFrame([new_row])
+
+            self.dataframe = pd.concat([self.dataframe, new_row_df], ignore_index=True)
+        except:
+            traceback.print_exc()
+        self.endInsertRows()
+        return True
+
+    def insert_model_record(self, record, position):
+        last_row_index = self.dataframe.index[position]
+        for key, value in record.items():
+            self.dataframe.at[last_row_index, key] = value
+
+    def remove_model_record(self, pk):
+        try:
+            pk_column = self.find_pk_of_table(self.table_name, self.connector)
+            row_index = self.dataframe[self.dataframe[pk_column] == pk].index
+            if not row_index.empty:
+                self.dataframe = self.dataframe.drop(row_index)
+                print(f"Record with primary key {pk} removed successfully.")
+        except Exception as e:
+            print(f"Error removing record: {e}")
+            traceback.print_exc()
 
