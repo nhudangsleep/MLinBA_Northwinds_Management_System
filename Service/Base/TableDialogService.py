@@ -59,12 +59,13 @@ class EditDialog(QDialog):
                     field.setValidator(QDoubleValidator())
                     field.setText(str(col_value))
                 elif col_type == "date" or col_type == "datetime":
+                    date_format = 'dd-MMM-yyyy'
+                    date_object = QDate.fromString(col_value, date_format)
                     field = QDateEdit()
                     field.setDisplayFormat("d-MMM-yyyy")
                     field.setCalendarPopup(True)
-                    col_value = QDate(col_value.year, col_value.month, col_value.day)
-                    field.setDate(col_value)
-                else:  # For strings and other types
+                    field.setDate(date_object)
+                else:
                     field = QLineEdit(self)
                     field.setText(str(col_value))
 
@@ -83,10 +84,10 @@ class EditDialog(QDialog):
                 col = 0
                 row += 1
 
-            # Add a horizontal line separator between columns
-            separator = QFrame()
-            separator.setFrameShape(QFrame.Shape.HLine)
-            separator.setFrameShadow(QFrame.Shadow.Sunken)
+        # Add a horizontal line separator between columns
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setFrameShadow(QFrame.Shadow.Sunken)
         self.layout.addLayout(self.form_layout)
         self.layout.addWidget(separator)
 
@@ -111,10 +112,107 @@ class EditDialog(QDialog):
         new_data = {}
         for col, field in self.fields.items():
             if isinstance(field, QDateTimeEdit):
-                new_data[col] = field.dateTime().toString("yyyy-MM-dd")
+                new_data[col] = field.dateTime().toString("d-MMM-yyyy")
             elif isinstance(field, QComboBox):
                 new_data[col] = field.currentText()
             else:
                 new_data[col] = field.text()
-        print("Updated data:", new_data)
         self.accept()
+
+
+class NonEditDialog(EditDialog):
+    def initUI(self):
+        self.layout = QVBoxLayout()
+        self.form_layout = QGridLayout()
+        self.fields = {}
+
+        col = 0
+        row = 0
+        for col_name, col_value in self.column_data.items():
+            if col_name not in self.column_info:
+                continue
+
+            col_type = self.column_info[col_name]["data_type"]
+            is_primary = self.column_info[col_name].get("pk_name") == "PRIMARY"
+
+            if col_name in self.referenced_pair.keys():
+                referenced_model = self.referenced_pair[col_name]['model']
+                referenced_column = self.referenced_pair[col_name]['referenced_column']
+                referenced_data = referenced_model.dataframe[referenced_column].astype(str)
+                tooltips = []
+                for item in referenced_data:
+                    tooltip_data = referenced_model.dataframe[referenced_model.dataframe[referenced_column] == int(item)].to_dict(
+                        orient='records')[0]
+                    tooltip = ""
+                    for k, v in tooltip_data.items():
+                        tooltip += "{}: {}\n".format(k, v)
+                    tooltips.append(tooltip)
+
+                field = HoverComboBox(tooltips, self)
+                completer = QCompleter(referenced_data, self)
+                field.setCompleter(completer)
+                field.addItems(referenced_data)
+                field.setCurrentText(str(col_value))
+            else:
+                if col_type == "int":
+                    field = QLineEdit(self)
+                    field.setValidator(QIntValidator())
+                    field.setText(str(col_value))
+
+                elif col_type == "float":
+                    field = QLineEdit(self)
+                    field.setValidator(QDoubleValidator())
+                    field.setText(str(col_value))
+                elif col_type == "date" or col_type == "datetime":
+                    field = QDateEdit()
+                    field.setDisplayFormat("d-MMM-yyyy")
+                    field.setCalendarPopup(True)
+                    if col_value:
+                        try:
+                            date_format = 'dd-MMM-yyyy'
+                            date_object = QDate.fromString(col_value, date_format)
+                            if date_object.isValid():
+                                field.setDate(date_object)
+                            else:
+                                field.clear()
+                        except Exception as e:
+                            field = QLineEdit(self)
+                    else:
+                        field = QLineEdit(self)
+                else:
+                    field = QLineEdit(self)
+                    field.setText(str(col_value))
+
+                field.setReadOnly(True)
+
+            self.fields[col_name] = field
+
+            # Add label and field to the grid layout
+            self.form_layout.addWidget(QLabel(col_name), row, col * 2)
+            self.form_layout.addWidget(field, row, col * 2 + 1)
+
+            if col == 0:
+                col = 1
+            else:
+                col = 0
+                row += 1
+
+        # Add a horizontal line separator between columns
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setFrameShadow(QFrame.Shadow.Sunken)
+        self.layout.addLayout(self.form_layout)
+        self.layout.addWidget(separator)
+
+        # Add Close button
+        self.button_layout = QHBoxLayout()
+        self.button_layout.addItem(QSpacerItem(20, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
+        self.close_button = QPushButton("Close", self)
+        self.close_button.clicked.connect(self.reject)
+        self.button_layout.addWidget(self.close_button)
+
+        # Add button layout to the bottom of the main layout
+        self.layout.addStretch()
+        self.layout.addLayout(self.button_layout)
+
+        self.setLayout(self.layout)

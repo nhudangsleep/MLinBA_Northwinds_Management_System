@@ -1,6 +1,8 @@
 import pandas as pd
 from Utils.SchemaHandler import SchemaHandler
 from copy import copy
+from pandas.api.types import is_datetime64_any_dtype as is_datetime
+
 
 
 class DataBridge:
@@ -91,6 +93,11 @@ class DataBridge:
             python_data_type = self.schema_handler.get_python_data_type(column)
             if python_data_type:
                 df[column] = df[column].astype(python_data_type)
+
+        date_columns = [column for column in df.columns if is_datetime(df[column])]
+
+        for column in date_columns:
+            df[column] = pd.to_datetime(df[column]).dt.strftime('%d-%b-%Y')
         return df
 
     def archive_records(self, list_pk):

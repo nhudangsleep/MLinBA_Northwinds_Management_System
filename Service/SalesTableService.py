@@ -12,8 +12,9 @@ class SalesTableService(TableViewService):
     - alter header info
     - alter products in one order
     """
-    def __init__(self, **ui_dictionary):
-        super().__init__()
+
+    def __init__(self, parent, is_sales=True):
+        super().__init__(parent, is_sales)
         self.config_table_menu()
 
     def config_table_menu(self):
@@ -57,23 +58,3 @@ class SalesTableService(TableViewService):
             row = index.row()
         # Open Dialog
 
-        pass
-
-    def insert_row(self):
-        # insert 1 row into the table view
-        indexes = self.selectionModel().selectedIndexes()
-        if indexes:
-            index = indexes[0]
-            row = index.row()
-            self.model().insertRow(row, 1, QModelIndex())
-            last_index = self.model().index(row, 0, QModelIndex())
-            self.setCurrentIndex(last_index)
-            self.scrollTo(last_index, self.ScrollHint.PositionAtBottom)
-
-    def remove_row(self):
-        # Remove 1 row from the table view
-        indexes = self.selectionModel().selectedIndexes()
-        if indexes:
-            index = indexes[0]
-            row = index.row()
-            self.model().removeRow(row, 1, QModelIndex())

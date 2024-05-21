@@ -76,14 +76,14 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.page_management)
         self.wizard_page_ui = Ui_WizardManagementPage()
         self.wizard_page_ui.setupUi(self.page_management)
-        self.management_page_controller = ManagementPageController(self.wizard_page_ui)
+        self.management_page_controller = ManagementPageController(self.wizard_page_ui, MainWindow)
 
         self.page_sales = QtWidgets.QWidget()
         self.page_sales.setObjectName("page_sales")
         self.stackedWidget.addWidget(self.page_sales)
         self.wizard_sales_ui = Ui_WizardSalesPage()
         self.wizard_sales_ui.setupUi(self.page_sales)
-        self.sales_page_controller = SalesPageController(self.wizard_sales_ui)
+        self.sales_page_controller = SalesPageController(self.wizard_sales_ui, MainWindow)
 
         self.page_predictive_model = QtWidgets.QWidget()
         self.page_predictive_model.setObjectName("page_predictive_model")
