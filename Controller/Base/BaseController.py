@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 from Connector.DatabaseConnection import DatabaseConnection
 from Controller.Worker.DataLoadWorker import DataLoadWorker
-from Service.Base.FilterProxyModel import FilterProxyModel
+from Model.Base.FilterProxyModel import FilterProxyModel
 
 load_dotenv()
 
