@@ -65,7 +65,6 @@ class DataBridge:
         return df
 
     def get_all_records(self, table_name=None):
-        print(table_name)
         if not table_name:
             table_name = copy(self.table_name)
         self.get_table_structure(table_name)
