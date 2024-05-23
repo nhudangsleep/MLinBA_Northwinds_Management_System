@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>590</width>
-    <height>270</height>
+    <width>1060</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>-1</x>
      <y>-1</y>
-     <width>591</width>
-     <height>271</height>
+     <width>1061</width>
+     <height>541</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -74,7 +74,7 @@
      <widget class="QTableView" name="TableView"/>
     </item>
     <item row="0" column="5">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="pushButton_view_items">
       <property name="text">
        <string>View Items</string>
       </property>

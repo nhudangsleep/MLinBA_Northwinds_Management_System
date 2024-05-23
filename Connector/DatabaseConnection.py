@@ -89,3 +89,19 @@ class DatabaseConnection:
         if cls._conn is not None:
             return cls._conn.is_connected()
         return False
+
+    @classmethod
+    def execute_query(cls, query):
+        if cls._conn is not None:
+            try:
+                cursor = cls._conn.cursor()
+                cursor.execute(query)
+                result = cursor.fetchall()
+                return result
+            except Exception as e:
+                print(f"Failed to execute query: {e}")
+                return None
+        else:
+            print("No connection available.")
+            return None
+

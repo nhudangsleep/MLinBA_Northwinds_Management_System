@@ -1,37 +1,71 @@
 import traceback
 
-from PyQt6.QtWidgets import QTableView, QDialog, QVBoxLayout, QLineEdit, QPushButton, QApplication, QDateTimeEdit
+from PyQt6.QtWidgets import QTableView, QDialog, QVBoxLayout, QLineEdit, QPushButton, QApplication, QDateTimeEdit, \
+    QLabel, QFormLayout
 from PyQt6.QtCore import Qt, QModelIndex
 
 from Service.Base.TableDialogService import EditDialog, NonEditDialog
 
 
 class TableViewService(QTableView):
-    def __init__(self, parent=None, is_sales=None):
+    def __init__(self, parent=None, is_not_allow_edit=None, is_view_dialog=False):
         super().__init__(parent)
-        self.is_sales = is_sales
+        self.is_not_allow_edit = is_not_allow_edit
         self.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)  # Disable direct editing
         self.setSelectionMode(QTableView.SelectionMode.SingleSelection)  # Limit selection to single row
         self.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
-        self.doubleClicked.connect(self.openEditDialog)
+        print(is_view_dialog)
+        if is_view_dialog:
+            self.doubleClicked.connect(self.openViewDialog)
+        else:
+            self.doubleClicked.connect(self.openEditDialog)
         self.model = None
 
     def setModel(self, model):
         super().setModel(model)
         self.model = model
 
-    def openEditDialog(self, index, is_insert_auto_dialog=False):
+    def openViewDialog(self, index):
         try:
             source_index = self.model.mapToSource(index)
+            row = source_index.row()
+            model = self.model.sourceModel()
+            column_data = model.dataframe.iloc[row].to_dict()
 
+            dialog = QDialog(self)
+            dialog.setWindowTitle("View Record")
+            layout = QVBoxLayout(dialog)
+
+            form_layout = QFormLayout()
+
+            for key, value in column_data.items():
+                label = QLabel(f"{key}:")
+                line_edit = QLineEdit()
+                line_edit.setText(str(value))
+                line_edit.setReadOnly(True)  # Ensure the QLineEdit is read-only
+                form_layout.addRow(label, line_edit)
+
+            layout.addLayout(form_layout)
+
+            close_button = QPushButton("Close")
+            close_button.clicked.connect(dialog.accept)
+            layout.addWidget(close_button)
+
+            dialog.setLayout(layout)
+            dialog.exec()
+        except:
+            traceback.print_exc()
+
+    def openEditDialog(self, index, is_insert_auto_dialog=False, is_crud=True):
+        try:
+            source_index = self.model.mapToSource(index)
             row = source_index.row()
             column = source_index.column()
             model = self.model.sourceModel()
-
             column_data = model.dataframe.iloc[row].to_dict()
             column_info = {col["column_name"]: col for col in
                            model.connector.schema_dictionary[model.connector.database][model.table_name]}
-            if not self.is_sales:
+            if not self.is_not_allow_edit:
                 dialog = EditDialog(column_data, column_info, model.referenced_pair)
 
             else:
