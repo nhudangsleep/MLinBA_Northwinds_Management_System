@@ -13,8 +13,8 @@ class SalesTableService(TableViewService):
     - alter products in one order
     """
 
-    def __init__(self, parent, is_sales=True):
-        super().__init__(parent, is_sales)
+    def __init__(self, parent, is_not_allow_edit=True):
+        super().__init__(parent, is_not_allow_edit)
         self.config_table_menu()
 
     def config_table_menu(self):
