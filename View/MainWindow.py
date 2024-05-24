@@ -129,4 +129,4 @@ class Ui_MainWindow(object):
         self.pushButton_sales.setText(_translate("MainWindow", "Sales"))
         self.pushButton_operation.setText(_translate("MainWindow", "Operation"))
         self.pushButton_catalog.setText(_translate("MainWindow", "Catalog"))
-        self.pushButton_predictive_model.setText(_translate("MainWindow", "Predictive Models"))
+        self.pushButton_predictive_model.setText(_translate("MainWindow", "ML Models"))
