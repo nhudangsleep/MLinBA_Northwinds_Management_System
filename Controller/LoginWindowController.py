@@ -27,30 +27,31 @@ class LoginWindowController(Ui_LoginWindow, BaseController):
         return hashed
 
     def processLogin(self):
-        user_name = self.lineEditUserName.text()
-        password = self.lineEditPassword.text()
-        hashed_password = str(bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()))
-        is_correct = False
-        if user_name in self.account_model.dataframe['username'].values:
-            stored_hashed_password = self.account_model.dataframe.loc[
-                self.account_model.dataframe['username'] == user_name, 'password'
-            ].values[0]
+        try:
+            user_name = self.lineEditUserName.text()
+            password = self.lineEditPassword.text()
+            hashed_password = str(bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()))
+            is_correct = False
+            if user_name in self.account_model.dataframe['username'].values:
+                stored_hashed_password = self.account_model.dataframe.loc[
+                    self.account_model.dataframe['username'] == user_name, 'password'
+                ].values[0]
 
-            # Check if the stored hashed password matches the input hashed password
-            if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
-                is_correct = True
+                if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
+                    is_correct = True
 
-        if is_correct:
-            QMessageBox.information(self.MainWindow, "Login Successful", "You have successfully logged in.")
-            window = QMainWindow()
-            window.setWindowIcon(QtGui.QIcon('Images/LLL.png'))
+            if is_correct:
+                QMessageBox.information(self.MainWindow, "Login Successful", "You have successfully logged in.")
+                window = QMainWindow()
+                window.setWindowIcon(QtGui.QIcon('Images/LLL.png'))
 
-            self.UserUi = MainWindowController()
-            self.UserUi.setupUi(window)
-            self.UserUi.show()
-            self.MainWindow.close()
-        else:
-            QMessageBox.warning(self.MainWindow, "Login Failed", "Incorrect username or password. Please try again.")
-
+                self.UserUi = MainWindowController()
+                self.UserUi.setupUi(window)
+                self.UserUi.show()
+                self.MainWindow.close()
+            else:
+                QMessageBox.warning(self.MainWindow, "Login Failed", "Incorrect username or password. Please try again.")
+        except:
+            traceback.print_exc()
     def show(self):
         self.MainWindow.show()
