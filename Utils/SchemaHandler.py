@@ -86,7 +86,6 @@ class SchemaHandler:
 
     @staticmethod
     def convert_value(value, data_type):
-        print(value, " ", data_type)
         try:
             if data_type in ['int', 'smallint', 'tinyint', 'bigint']:
                 return int(value)

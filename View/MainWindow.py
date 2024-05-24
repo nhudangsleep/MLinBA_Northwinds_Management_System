@@ -8,6 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+from Controller.DashboardOverViewPageController import DashboardOverViewPageController
 from Controller.MachineLearningPageController import MachineLearningPageController
 from Controller.ManagementPageController import ManagementPageController
 from Controller.SalesPageController import SalesPageController
@@ -15,6 +16,8 @@ from Service.Base.Dropbox import DropdownButton
 from View.MachineLearningPage import Ui_WizardMachineLearningPage
 from View.ManagementPage import Ui_WizardManagementPage
 from View.SalesPage import Ui_WizardSalesPage
+from View.DashboardOverviewPage import Ui_DashboardOverviewPage
+
 
 
 class Ui_MainWindow(object):
@@ -74,6 +77,9 @@ class Ui_MainWindow(object):
         self.page_dashboard = QtWidgets.QWidget()
         self.page_dashboard.setObjectName("page_dashboard")
         self.stackedWidget.addWidget(self.page_dashboard)
+        self.wizard_dashboard_ui = Ui_DashboardOverviewPage()
+        self.wizard_dashboard_ui.setupUi(self.page_dashboard)
+        self.dashboard_page_controller = DashboardOverViewPageController(self.wizard_dashboard_ui, MainWindow)
 
         self.page_management = QtWidgets.QWidget()
         self.page_management.setObjectName("page_management")
@@ -117,7 +123,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Northwind Management System"))
         self.label_app_name.setText(_translate("MainWindow", "Northwind Management System"))
         self.pushButton_dashboard.setText(_translate("MainWindow", "Dashboard"))
         self.pushButton_sales.setText(_translate("MainWindow", "Sales"))

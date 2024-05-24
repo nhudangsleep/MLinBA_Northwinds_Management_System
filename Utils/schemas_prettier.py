@@ -15,5 +15,4 @@ def schemas_prettier(data):
             "is_auto_increment": is_auto_increment
         }
         prettified_schema[schema_name][table_name].append(column_info)
-    print(prettified_schema)
     return prettified_schema

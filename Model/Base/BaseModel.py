@@ -148,7 +148,6 @@ class BaseModel(QAbstractTableModel):
                             elif data_type == "datetime":
                                 try:
                                     value = datetime.strptime(value, "d-MMM-yyyy")
-                                    print(value)
                                 except ValueError:
                                     print("Invalid value for datetime column {}.".format(column_name))
                                     return False

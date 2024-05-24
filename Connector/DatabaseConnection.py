@@ -73,7 +73,6 @@ class DatabaseConnection:
                 cls.table_names = list(lst_schemas[cls.database].keys())
 
                 cls.schema_dictionary = lst_schemas
-                print(cls.schema_dictionary)
             except Exception as e:
                 print(f"Failed to fetch schemas: {e}")
 

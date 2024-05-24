@@ -11,7 +11,6 @@ class CRUDAPI:
 
     def commit_changes(self):
         comparison = compare_dataframes(self.dataframe, self.parent_data, self.pk_column)
-        print(comparison)
         self.update(comparison['updated_rows'])
         self.create(comparison['new_rows'])
         self.destroy(comparison['removed_rows'])
@@ -50,7 +49,6 @@ class CRUDAPI:
             except Exception as e:
                 print(f"Failed to insert row {row[self.pk_column]}: {e}")
         self.connection._conn.commit()
-        print('created')
         cursor.close()
 
     def destroy(self, removed_rows):

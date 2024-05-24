@@ -14,7 +14,6 @@ class TableViewService(QTableView):
         self.setEditTriggers(QTableView.EditTrigger.NoEditTriggers)  # Disable direct editing
         self.setSelectionMode(QTableView.SelectionMode.SingleSelection)  # Limit selection to single row
         self.setSelectionBehavior(QTableView.SelectionBehavior.SelectRows)
-        print(is_view_dialog)
         if is_view_dialog:
             self.doubleClicked.connect(self.openViewDialog)
         else:

@@ -6,9 +6,6 @@ class SalesOrderModel(BaseModel):
         table_name = "salesorder"
         super().__init__(table_name, connector)
 
-        print(self.referenced_pair)
-
-
     def create_new_record(self, **data):
         pass
 

@@ -41,6 +41,11 @@ class MainWindowController(Ui_MainWindow, BaseController):
         }
         self.pushButton_predictive_model.setup_actions(self.predictive_model_dropdown_buttons)
 
+        self.dashboard_dropdown_buttons = {
+            "Overview": self.process_dasboard_overview
+        }
+        self.pushButton_dashboard.setup_actions(self.dashboard_dropdown_buttons)
+
     def process_customers(self):
         self.stackedWidget.setCurrentIndex(2)
         self.sales_page_controller.connect_table("Customer")
@@ -63,7 +68,6 @@ class MainWindowController(Ui_MainWindow, BaseController):
 
     def process_products(self):
         self.stackedWidget.setCurrentIndex(1)
-        print(self.stackedWidget.currentIndex())
         self.management_page_controller.connect_table("Product")
 
     def process_categories(self):
@@ -72,6 +76,9 @@ class MainWindowController(Ui_MainWindow, BaseController):
 
     def process_clustering_model(self):
         self.stackedWidget.setCurrentIndex(3)
+
+    def process_dasboard_overview(self):
+        self.stackedWidget.setCurrentIndex(0)
 
     def show(self):
         self.MainWindow.show()

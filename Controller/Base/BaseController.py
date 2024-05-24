@@ -77,7 +77,6 @@ class BaseController:
             pass
 
     def on_error_occurred(self, error_message):
-        print(f"Error loading data: {error_message}")
         self.worker_thread.quit()
         self.worker_thread.wait()
 
