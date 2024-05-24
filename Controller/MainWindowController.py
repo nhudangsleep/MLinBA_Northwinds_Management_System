@@ -12,9 +12,8 @@ class MainWindowController(Ui_MainWindow, BaseController):
     def setupUi(self, MainWindow):
         super().setupUi(MainWindow)
         self.MainWindow = MainWindow
-        self.stackedWidget.setCurrentIndex(1)
         self.setup_navigation_bar()
-        self.process_orders()
+        self.process_dashboard_overview()
 
     def setup_navigation_bar(self):
         self.sales_dropdown_buttons = {
@@ -42,7 +41,7 @@ class MainWindowController(Ui_MainWindow, BaseController):
         self.pushButton_predictive_model.setup_actions(self.predictive_model_dropdown_buttons)
 
         self.dashboard_dropdown_buttons = {
-            "Overview": self.process_dasboard_overview
+            "Overview": self.process_dashboard_overview
         }
         self.pushButton_dashboard.setup_actions(self.dashboard_dropdown_buttons)
 
@@ -77,7 +76,7 @@ class MainWindowController(Ui_MainWindow, BaseController):
     def process_clustering_model(self):
         self.stackedWidget.setCurrentIndex(3)
 
-    def process_dasboard_overview(self):
+    def process_dashboard_overview(self):
         self.stackedWidget.setCurrentIndex(0)
 
     def show(self):
