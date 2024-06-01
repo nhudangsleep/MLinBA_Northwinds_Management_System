@@ -5,4 +5,5 @@ An extended version of the final project on Programming Techniques (aka do-an-cu
 
 # Setting
 `pip install -r requirements.txt`
+
 an .env file is also required to run this application
