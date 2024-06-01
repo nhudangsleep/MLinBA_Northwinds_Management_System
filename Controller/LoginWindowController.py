@@ -30,14 +30,12 @@ class LoginWindowController(Ui_LoginWindow, BaseController):
         try:
             user_name = self.lineEditUserName.text()
             password = self.lineEditPassword.text()
-            hashed_password = str(bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()))
             is_correct = False
             if user_name in self.account_model.dataframe['username'].values:
                 stored_hashed_password = self.account_model.dataframe.loc[
                     self.account_model.dataframe['username'] == user_name, 'password'
                 ].values[0]
-
-                if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
+                if password == stored_hashed_password:
                     is_correct = True
 
             if is_correct:

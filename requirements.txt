@@ -7,7 +7,3 @@ python-dotenv==1.0.1
 python_bcrypt==0.3.2
 scikit_learn==1.4.0
 SQLAlchemy==2.0.29
-
-scikit-learn~=1.4.0
-mysql~=0.0.3
-mysql-connector-python~=8.3.0

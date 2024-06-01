@@ -8,6 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+from Controller.DashboardDetailPageController import DashboardDetailPageController
 from Controller.DashboardOverViewPageController import DashboardOverViewPageController
 from Controller.MachineLearningPageController import MachineLearningPageController
 from Controller.ManagementPageController import ManagementPageController
@@ -17,6 +18,7 @@ from View.MachineLearningPage import Ui_WizardMachineLearningPage
 from View.ManagementPage import Ui_WizardManagementPage
 from View.SalesPage import Ui_WizardSalesPage
 from View.DashboardOverviewPage import Ui_DashboardOverviewPage
+from View.DashboardDetailPage import Ui_DashboardDetailPage
 
 
 
@@ -80,6 +82,14 @@ class Ui_MainWindow(object):
         self.wizard_dashboard_ui = Ui_DashboardOverviewPage()
         self.wizard_dashboard_ui.setupUi(self.page_dashboard)
         self.dashboard_page_controller = DashboardOverViewPageController(self.wizard_dashboard_ui, MainWindow)
+
+
+        self.page_dashboard_detail = QtWidgets.QWidget()
+        self.page_dashboard_detail.setObjectName("page_dashboard_detail")
+        self.stackedWidget.addWidget(self.page_dashboard_detail)
+        self.wizard_dashboard_detail_ui = Ui_DashboardDetailPage()
+        self.wizard_dashboard_detail_ui.setupUi(self.page_dashboard_detail)
+        self.dashboard_detail_page_controller = DashboardDetailPageController(self.wizard_dashboard_detail_ui, MainWindow)
 
         self.page_management = QtWidgets.QWidget()
         self.page_management.setObjectName("page_management")

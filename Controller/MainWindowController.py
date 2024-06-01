@@ -41,43 +41,47 @@ class MainWindowController(Ui_MainWindow, BaseController):
         self.pushButton_predictive_model.setup_actions(self.predictive_model_dropdown_buttons)
 
         self.dashboard_dropdown_buttons = {
-            "Overview": self.process_dashboard_overview
+            "Overview": self.process_dashboard_overview, 
+            "Detail": self.process_detail
         }
         self.pushButton_dashboard.setup_actions(self.dashboard_dropdown_buttons)
 
     def process_customers(self):
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(3)
         self.sales_page_controller.connect_table("Customer")
 
     def process_orders(self):
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(3)
         self.sales_page_controller.connect_table("SalesOrder")
 
     def process_employees(self):
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(2)
         self.management_page_controller.connect_table("Employee")
 
     def process_suppliers(self):
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(2)
         self.management_page_controller.connect_table("Supplier")
 
     def process_shippers(self):
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(2)
         self.management_page_controller.connect_table("Shipper")
 
     def process_products(self):
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(2)
         self.management_page_controller.connect_table("Product")
 
     def process_categories(self):
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(2)
         self.management_page_controller.connect_table("Category")
 
     def process_clustering_model(self):
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(4)
 
     def process_dashboard_overview(self):
         self.stackedWidget.setCurrentIndex(0)
+
+    def process_detail(self):
+        self.stackedWidget.setCurrentIndex(1)
 
     def show(self):
         self.MainWindow.show()

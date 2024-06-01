@@ -86,3 +86,4 @@ class BaseController:
         total_sum = round(dataframe['Total'].sum(), 2) + self.additional_data['freight']
 
         self.view.lineEdit_total.setText(str(total_sum))
+

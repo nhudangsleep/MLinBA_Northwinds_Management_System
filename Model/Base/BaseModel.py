@@ -18,6 +18,7 @@ class BaseModel(QAbstractTableModel):
             self.table_name = table_name
             self.connector = connector
             self.dataframe = None
+            self.temp_dataframe = None
             self.pk_column = self.find_pk_of_table(self.table_name, self.connector)
             self.init_bridge()
             super().__init__()
@@ -40,6 +41,8 @@ class BaseModel(QAbstractTableModel):
     def init_bridge(self):
         self.bridge = DataBridge(connector=self.connector, table_name=self.table_name)
         self.dataframe = self.bridge.get_all_records()
+
+        self.temp_dataframe = deepcopy(self.dataframe)
 
         self.parent_data = deepcopy(self.dataframe)
         self.auto_increment_column = next(
@@ -228,3 +231,5 @@ class BaseModel(QAbstractTableModel):
             print(f"Error removing record: {e}")
             traceback.print_exc()
 
+    def reset_temp_dataframe(self):
+        self.temp_dataframe = deepcopy(self.dataframe)
